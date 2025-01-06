@@ -21,8 +21,8 @@ import Details from './Details';
 const Menu: React.FC = () => {
 
   const paths =[
-    {name:'Home', url: '/app/page1', icon: homeOutline},
-    {name:'News', url: '/app/page2', icon: newspaperOutline},
+    {name:'Home', url: '/it35-app/app/page1', icon: homeOutline},
+    {name:'News', url: '/it35-app/app/page2', icon: newspaperOutline},
   ]
 
   return (
@@ -43,7 +43,7 @@ const Menu: React.FC = () => {
             </IonItem>
           </IonMenuToggle>
         ))}
-       <IonButton routerLink='/' routerDirection='back' expand='full'>
+       <IonButton routerLink='/it35-app/' routerDirection='back' expand='full'>
           <IonIcon icon={logOutOutline} slot="start"></IonIcon>
           Logout
        </IonButton>
@@ -51,11 +51,12 @@ const Menu: React.FC = () => {
       </IonMenu>
 
       <IonRouterOutlet id='main'>
-        <Route exact path="/app/page1" component={Page1} />
-        <Route exact path="/app/page1/details" component={Details} />
-        <Route exact path="/app/page2" component={Page2} />
-        <Route exact path="/app">
-          <Redirect to="/app/page1"/>
+        <Route exact path="/it35-app/app/page1" component={Page1} />
+        <Route exact path="/it35-app/app/page1/details" component={Details} />
+        
+        <Route exact path="/it35-app/app/page2" component={Page2} />
+        <Route exact path="/it35-app/app">
+          <Redirect to="/it35-app/app/page1"/>
         </Route>
       </IonRouterOutlet>
 

@@ -12,7 +12,7 @@ const Login: React.FC = () => {
     const navigation = useIonRouter();
 
     const doLogin = () =>{
-        navigation.push('app','root','replace');
+        navigation.push('/it35-app/app','root','replace');
     }
 
   return (

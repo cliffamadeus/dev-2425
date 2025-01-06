@@ -21,7 +21,7 @@ const Page1: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
-        <IonButton routerLink="/app/page1/details" expand="full">
+        <IonButton routerLink="/it35-app/app/page1/details" expand="full">
             View Details
         </IonButton>
         

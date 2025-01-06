@@ -15,7 +15,7 @@ const Details: React.FC = () => {
         <IonHeader>
             <IonToolbar color="primary">
                 <IonButtons slot="start">
-                    <IonBackButton defaultHref='/app/page1' />
+                    <IonBackButton defaultHref='/it35-app/app/page1' />
                 </IonButtons>
                 <IonTitle>Page 1 Details</IonTitle>
 
