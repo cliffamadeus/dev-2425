@@ -1,4 +1,5 @@
 import { 
+  IonButton,
   IonButtons,
     IonContent, 
     IonHeader, 
@@ -19,7 +20,10 @@ const Page1: React.FC = () => {
           <IonTitle>Page 1</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent className='ion-padding'>
+        <IonButton routerLink="/app/page1/details" expand="full">
+            View Details
+        </IonButton>
         
       </IonContent>
     </IonPage>
