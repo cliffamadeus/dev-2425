@@ -1,6 +1,11 @@
 import { 
   IonButton,
   IonButtons,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
     IonContent, 
     IonHeader, 
     IonMenuButton, 
@@ -17,13 +22,23 @@ const Page1: React.FC = () => {
           <IonButtons slot='start'>
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Page 1</IonTitle>
+          <IonTitle>Home</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
         <IonButton routerLink="/it35-app/app/page1/details" expand="full">
             View Details
         </IonButton>
+
+        <IonCard>
+          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+          <IonCardHeader>
+            <IonCardTitle>Welcome!</IonCardTitle>
+            <IonCardSubtitle>This is my cross platform application!</IonCardSubtitle>
+          </IonCardHeader>
+
+          <IonCardContent>Here's a small text description for the card content. Nothing more, nothing less.</IonCardContent>
+        </IonCard>
         
       </IonContent>
     </IonPage>
