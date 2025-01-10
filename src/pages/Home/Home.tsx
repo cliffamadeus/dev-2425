@@ -14,7 +14,7 @@ import {
     IonToolbar 
 } from '@ionic/react';
 
-const Page1: React.FC = () => {
+const Home: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -26,7 +26,7 @@ const Page1: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
-        <IonButton routerLink="/it35-app/app/page1/details" expand="full">
+        <IonButton routerLink="/it35-app/app/home/details" expand="full">
             View Details
         </IonButton>
 
@@ -45,4 +45,4 @@ const Page1: React.FC = () => {
   );
 };
 
-export default Page1;
+export default Home;
