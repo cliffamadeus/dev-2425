@@ -1,0 +1,18 @@
+.avatar-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8rem;
+}
+
+.about-avatar{
+    margin-left: 1rem;
+    width:auto;
+    height: auto;
+}
+
+.aboutcontent{
+    width: 90%;
+    margin-left: 1rem;
+    align-items: center;
+}
