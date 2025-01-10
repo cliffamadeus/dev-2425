@@ -10,6 +10,7 @@ import {
     IonRouterOutlet, 
     IonSplitPane, 
     IonTitle, 
+    IonToast, 
     IonToolbar 
 } from '@ionic/react';
 import {homeOutline,newspaperOutline, logOutOutline} from 'ionicons/icons'
@@ -17,13 +18,19 @@ import { Redirect, Route } from 'react-router';
 import Page1 from './Page1';
 import Page2 from './Page2';
 import Details from './Details';
+import { useState } from 'react';
 
 const Menu: React.FC = () => {
-
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  
   const paths =[
     {name:'Home', url: '/it35-app/app/page1', icon: homeOutline},
     {name:'News', url: '/it35-app/app/page2', icon: newspaperOutline},
   ]
+
+  const handleLogout = () => {
+    setIsToastOpen(true);
+  };
 
   return (
     <IonPage>
@@ -43,10 +50,26 @@ const Menu: React.FC = () => {
             </IonItem>
           </IonMenuToggle>
         ))}
-       <IonButton routerLink='/it35-app/' routerDirection='back' expand='full'>
-          <IonIcon icon={logOutOutline} slot="start"></IonIcon>
-          Logout
-       </IonButton>
+
+      <IonButton
+        routerLink='/it35-app/'
+        routerDirection='root'
+        expand='full'
+        onClick={handleLogout} // Trigger toast and logout action
+      >
+      <IonIcon icon={logOutOutline} slot="start"></IonIcon>
+        Logout
+      </IonButton>
+
+      <IonToast
+        isOpen={isToastOpen}
+        position="top"
+        message="Logout Successful"
+        onDidDismiss={() => setIsToastOpen(false)} 
+        duration={500} 
+        color="primary"
+      />
+
       </IonContent>
       </IonMenu>
 
