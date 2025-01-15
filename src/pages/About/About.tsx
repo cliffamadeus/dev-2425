@@ -22,15 +22,25 @@ import { useEffect, useState  } from 'react';
 const About: React.FC = () => {
   const [buffer1, setBuffer1] = useState(0.06);
   const [progress1, setProgress1] = useState(0);
-  const [buffer2, setBuffer2] = useState(0.1); // Different initial value
+  const [buffer2, setBuffer2] = useState(0.1); 
   const [progress2, setProgress2] = useState(0);
+
+  const [energy, setEnergy] = useState(0.1); 
+  const [energyProgress, setEnergyProgress] = useState(0);
+
+
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setBuffer1((prev) => Math.min(prev + 0.06, 1)); // Increment buffer1
-      setProgress1((prev) => Math.min(prev + 0.05, 1)); // Increment progress1
-      setBuffer2((prev) => Math.min(prev + 0.08, 1)); // Increment buffer2
-      setProgress2((prev) => Math.min(prev + 0.07, 1)); // Increment progress2
+      setBuffer1((prev) => Math.min(prev + 0.06, 1)); 
+      setProgress1((prev) => Math.min(prev + 0.05, 1)); 
+      setBuffer2((prev) => Math.min(prev + 0.08, 1)); 
+      setProgress2((prev) => Math.min(prev + 0.07, 1)); 
+
+      setEnergy((prev) => Math.min(prev + 0.03, 1)); 
+      setEnergyProgress((prev) => Math.min(prev + 0.03, 1)); 
+      
+
     }, 1000);
 
     return () => clearInterval(interval);
@@ -43,9 +53,12 @@ const About: React.FC = () => {
         setProgress1(0);
         setBuffer2(0.1);
         setProgress2(0);
+
+        setEnergy(0.03);
+        setEnergyProgress(0);
       }, 1000);
     }
-  }, [progress1, progress2]);
+  }, [progress1, progress2, energy]);
   
   return (
     <IonPage>
@@ -69,7 +82,7 @@ const About: React.FC = () => {
                 <p>Programmer</p>
                 Looks<IonProgressBar buffer={buffer1} value={progress1}></IonProgressBar>
                 Awesomeness<IonProgressBar buffer={buffer2} value={progress2}></IonProgressBar>
-               
+                Energy<IonProgressBar color="warning" buffer={energy} value={energyProgress}></IonProgressBar>
               </IonLabel>
             </IonItem>
                 
