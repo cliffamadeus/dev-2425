@@ -27,25 +27,25 @@ function Home() {
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
-            <Redirect exact path="/" to="/feed" />
+            <Redirect exact path="/it35-app/" to="/it35-app/app/home/feed" />
 
-            <Route path="/feed" render={() => <FeedPage />} exact={true} />
-            <Route path="/library" render={() => <LibraryPage />} exact={true} />
-            <Route path="/search" render={() => <SearchPage />} exact={true} />
+            <Route path="/it35-app/app/home/feed" render={() => <FeedPage />} exact={true} />
+            <Route path="/it35-app/app/home/library" render={() => <LibraryPage />} exact={true} />
+            <Route path="/it35-app/app/home/search" render={() => <SearchPage />} exact={true} />
           </IonRouterOutlet>
 
           <IonTabBar slot="bottom">
-            <IonTabButton tab="feed" href="/feed">
+            <IonTabButton tab="feed" href="/it35-app/app/home/feed">
               <IonIcon icon={cafeOutline} />
               <IonLabel>Feed</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab="library" href="/library">
+            <IonTabButton tab="library" href="/it35-app/app/home/library">
               <IonIcon icon={library} />
               <IonLabel>Library</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab="search" href="/search">
+            <IonTabButton tab="search" href="/it35-app/app/home/search">
               <IonIcon icon={search} />
               <IonLabel>Search</IonLabel>
             </IonTabButton>
