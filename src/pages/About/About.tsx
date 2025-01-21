@@ -1,20 +1,26 @@
-import { 
+import {
   IonAvatar,
   IonButton,
   IonButtons,
-    IonCol,
-    IonContent, 
-    IonGrid, 
-    IonHeader, 
-    IonItem, 
-    IonLabel, 
-    IonMenuButton, 
-    IonPage, 
-    IonProgressBar, 
-    IonRow, 
-    IonTitle, 
-    IonToast, 
-    IonToolbar 
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonMenuButton,
+    IonPage,
+    IonProgressBar,
+    IonTitle,
+    IonToast,
+    IonToolbar,
+    IonFooter,
+    IonCardTitle,
+    IonCardHeader,
+    IonCardContent,
+    IonCardSubtitle,
+    IonCard,
+    IonGrid,
+    IonRow,
+    IonCol
 } from '@ionic/react';
 import './About.css';
 import { useEffect, useState  } from 'react';
@@ -22,24 +28,24 @@ import { useEffect, useState  } from 'react';
 const About: React.FC = () => {
   const [buffer1, setBuffer1] = useState(0.06);
   const [progress1, setProgress1] = useState(0);
-  const [buffer2, setBuffer2] = useState(0.1); 
+  const [buffer2, setBuffer2] = useState(0.1);
   const [progress2, setProgress2] = useState(0);
 
-  const [energy, setEnergy] = useState(0.1); 
+  const [energy, setEnergy] = useState(0.1);
   const [energyProgress, setEnergyProgress] = useState(0);
 
 
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setBuffer1((prev) => Math.min(prev + 0.06, 1)); 
-      setProgress1((prev) => Math.min(prev + 0.05, 1)); 
-      setBuffer2((prev) => Math.min(prev + 0.08, 1)); 
-      setProgress2((prev) => Math.min(prev + 0.07, 1)); 
+      setBuffer1((prev) => Math.min(prev + 0.06, 1));
+      setProgress1((prev) => Math.min(prev + 0.05, 1));
+      setBuffer2((prev) => Math.min(prev + 0.08, 1));
+      setProgress2((prev) => Math.min(prev + 0.07, 1));
 
-      setEnergy((prev) => Math.min(prev + 0.03, 1)); 
-      setEnergyProgress((prev) => Math.min(prev + 0.03, 1)); 
-      
+      setEnergy((prev) => Math.min(prev + 0.03, 1));
+      setEnergyProgress((prev) => Math.min(prev + 0.03, 1));
+
 
     }, 1000);
 
@@ -59,7 +65,7 @@ const About: React.FC = () => {
       }, 1000);
     }
   }, [progress1, progress2, energy]);
-  
+
   return (
     <IonPage>
       <IonHeader>
@@ -76,7 +82,7 @@ const About: React.FC = () => {
                     <img alt="Silhouette of a person's head" src="https://raw.githubusercontent.com/cliffamadeus/it35-app/refs/heads/dev-profile/src/pages/About/avatar.png"/>
             </IonAvatar>
 
-            <IonItem> 
+            <IonItem>
               <IonLabel>
                 <h1>CLIFFMEISTER</h1>
                 <p>Programmer</p>
@@ -85,23 +91,65 @@ const About: React.FC = () => {
                 Energy<IonProgressBar color="warning" buffer={energy} value={energyProgress}></IonProgressBar>
               </IonLabel>
             </IonItem>
-                
+
           </div>
-          
-          <IonItem> 
+
+          <IonItem>
               <IonLabel>
                 <h1>About</h1>
                 <p></p>
               </IonLabel>
           </IonItem>
 
-          <IonItem> 
+          <IonItem>
               <IonLabel>
                 <p>This application is built by the greatest slacker that's ever lived</p>
               </IonLabel>
+
           </IonItem>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+              <IonCard color="light">
+                <IonCardHeader>
+                  <IonCardTitle>Cards Cards!</IonCardTitle>
+                  <IonCardSubtitle>This developer loves using cards</IonCardSubtitle>
+                </IonCardHeader>
+
+                <IonCardContent></IonCardContent>
+              </IonCard>
+              </IonCol>
+
+              <IonCol>
+              <IonCard color="medium">
+                 <IonCardHeader>
+                   <IonCardTitle>Because Cards</IonCardTitle>
+                   <IonCardSubtitle>are awesome!</IonCardSubtitle>
+                 </IonCardHeader>
+
+                 <IonCardContent></IonCardContent>
+               </IonCard>
+
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+          <IonCard color="dark" className="ion-text-center">
+             <IonCardHeader>
+               <IonCardTitle>Who doesn't love cards?</IonCardTitle>
+               <IonCardSubtitle>if you do, get a life</IonCardSubtitle>
+             </IonCardHeader>
+
+             <IonCardContent></IonCardContent>
+           </IonCard>
+
+
+
+
 
           </IonContent>
+          <IonToolbar>
+            <IonTitle className="ion-text-center">CAFE All Rights Reserved 2025</IonTitle>
+          </IonToolbar>
         </IonPage>
   );
 };
