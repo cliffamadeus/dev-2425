@@ -1,20 +1,17 @@
-import { 
-  IonButton,
-  IonButtons,
-    IonCard,
-    IonCardContent,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCardTitle,
-    IonContent, 
-    IonHeader, 
-    IonMenuButton, 
-    IonPage, 
-    IonTitle, 
-    IonToolbar 
-} from '@ionic/react';
+import React from 'react';
+import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet,
+IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton,IonTitle, IonContent } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
 
-const Home: React.FC = () => {
+import { Route, Redirect } from 'react-router';
+
+import { cafeOutline, radio, library, search } from 'ionicons/icons';
+
+import FeedPage from './Tabs/FeedPage';
+import LibraryPage from './Tabs/LibraryPage';
+import SearchPage from './Tabs/SearchPage';
+
+function Home() {
   return (
     <IonPage>
       <IonHeader>
@@ -26,23 +23,41 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
-        <IonButton routerLink="/it35-app/app/home/details" expand="full">
-            View Details
-        </IonButton>
 
-        <IonCard>
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-          <IonCardHeader>
-            <IonCardTitle>Welcome!</IonCardTitle>
-            <IonCardSubtitle>This is my cross platform application!</IonCardSubtitle>
-          </IonCardHeader>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Redirect exact path="/" to="/feed" />
 
-          <IonCardContent>Here's a small text description for the card content. Nothing more, nothing less.</IonCardContent>
-        </IonCard>
-        
+            <Route path="/feed" render={() => <FeedPage />} exact={true} />
+            <Route path="/library" render={() => <LibraryPage />} exact={true} />
+            <Route path="/search" render={() => <SearchPage />} exact={true} />
+          </IonRouterOutlet>
+
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="feed" href="/feed">
+              <IonIcon icon={cafeOutline} />
+              <IonLabel>Feed</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="library" href="/library">
+              <IonIcon icon={library} />
+              <IonLabel>Library</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="search" href="/search">
+              <IonIcon icon={search} />
+              <IonLabel>Search</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+
+
       </IonContent>
     </IonPage>
-  );
-};
 
+
+  );
+}
 export default Home;
