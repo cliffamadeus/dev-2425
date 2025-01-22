@@ -67,8 +67,11 @@ const FeedPage: React.FC = () => {
   };
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    // Simulate a new fetch action for refreshing
+    setIsLoading(true);
     const newPhotos = await fetchPhotoDetails(10);
     setItems(newPhotos);
+    setIsLoading(false);
     event.detail.complete();
   };
 
@@ -91,7 +94,7 @@ const FeedPage: React.FC = () => {
           pullMax={200}
           onIonRefresh={handleRefresh}
         >
-          <IonRefresherContent></IonRefresherContent>
+          <IonRefresherContent />
         </IonRefresher>
 
         {/* Display loading spinner if items are being fetched */}
@@ -125,7 +128,7 @@ const FeedPage: React.FC = () => {
           <IonInfiniteScrollContent
             loadingText="Please wait..."
             loadingSpinner="bubbles"
-          ></IonInfiniteScrollContent>
+          />
         </IonInfiniteScroll>
       </IonContent>
     </>

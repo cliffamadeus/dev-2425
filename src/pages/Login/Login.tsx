@@ -79,7 +79,7 @@ const Login: React.FC = () => {
         
         <IonToast
           isOpen={isOpen}
-          position='middle'
+          position='top'
           message="Login Successful"
           onDidDismiss={() => setIsOpen(false)}
           duration={400}
