@@ -14,29 +14,56 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonRefresher,
+  IonRefresherContent,
+  RefresherEventDetail,
 } from '@ionic/react';
 
+interface PhotoItem {
+  title: string;
+  description: string;
+  index: number;
+}
+
 const FeedPage: React.FC = () => {
-  const [items, setItems] = useState<string[]>([]);
+  const [items, setItems] = useState<PhotoItem[]>([]);
+
+  const generateRandomIndex = () => Math.floor(Math.random() * 1000);
+
+  const fetchPhotoDetails = async (count: number) => {
+    const photos = [];
+    for (let i = 0; i < count; i++) {
+      const index = generateRandomIndex();
+      const response = await fetch(`https://picsum.photos/id/${index}/info`);
+      const data = await response.json();
+      photos.push({
+        title: `Photo by ${data.author}`,
+        description: data.download_url, // Using the URL as a placeholder description
+        index,
+      });
+    }
+    return photos;
+  };
+
+  const loadInitialItems = async () => {
+    const photoItems = await fetchPhotoDetails(10);
+    setItems(photoItems);
+  };
 
   useEffect(() => {
-    // Initial load of items
-    const initialItems = [];
-    for (let i = 1; i <= 10; i++) {
-      initialItems.push(`Item ${i}`);
-    }
-    setItems(initialItems);
+    loadInitialItems();
   }, []);
 
-  const loadMoreItems = (event: CustomEvent<void>) => {
-    setTimeout(() => {
-      const moreItems: string[] = [];
-      for (let i = items.length + 1; i <= items.length + 20; i++) {
-        moreItems.push(`Item ${i}`);
-      }
-      setItems((prevItems) => [...prevItems, ...moreItems]);
-      (event.target as HTMLIonInfiniteScrollElement).complete();
-    }, 1000);
+  const loadMoreItems = async (event: CustomEvent<void>) => {
+    const morePhotos = await fetchPhotoDetails(10);
+    setItems((prevItems) => [...prevItems, ...morePhotos]);
+    (event.target as HTMLIonInfiniteScrollElement).complete();
+  };
+
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    const newPhotos = await fetchPhotoDetails(10);
+    setItems(newPhotos);
+    event.detail.complete();
   };
 
   return (
@@ -51,18 +78,31 @@ const FeedPage: React.FC = () => {
       </IonHeader>
 
       <IonContent>
+        <IonRefresher
+          slot="fixed"
+          pullFactor={0.5}
+          pullMin={100}
+          pullMax={200}
+          onIonRefresh={handleRefresh}
+        >
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
+
         <IonList>
-          {items.map((item, index) => (
-              <IonCard key={item}>
-              <img  src={`https://picsum.photos/600/200?random=${index}`}
-                  alt="avatar" />
+          {items.map((item) => (
+            <IonCard key={item.index}>
+              <img
+                src={`https://picsum.photos/600/200?random=${item.index}`}
+                alt="Random"
+              />
               <IonCardHeader>
-                <IonCardTitle>Feed Photo</IonCardTitle>
-                <IonCardSubtitle></IonCardSubtitle>
+                <IonCardTitle>{item.title}</IonCardTitle>
+                <IonCardSubtitle>Random Image {item.index}</IonCardSubtitle>
               </IonCardHeader>
-              <IonCardContent>Here's a small text description for the card content. Nothing more, nothing less.</IonCardContent>
+              <IonCardContent>
+                Description: {item.description}
+              </IonCardContent>
             </IonCard>
-             
           ))}
         </IonList>
 
