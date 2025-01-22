@@ -19,6 +19,8 @@ import {
   RefresherEventDetail,
 } from '@ionic/react';
 
+import './FeedPage.css';
+
 interface PhotoItem {
   title: string;
   description: string;
@@ -27,6 +29,7 @@ interface PhotoItem {
 
 const FeedPage: React.FC = () => {
   const [items, setItems] = useState<PhotoItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);  // New state to track loading
 
   const generateRandomIndex = () => Math.floor(Math.random() * 1000);
 
@@ -46,8 +49,10 @@ const FeedPage: React.FC = () => {
   };
 
   const loadInitialItems = async () => {
+    setIsLoading(true); // Set loading state to true
     const photoItems = await fetchPhotoDetails(10);
     setItems(photoItems);
+    setIsLoading(false); // Set loading state to false once data is loaded
   };
 
   useEffect(() => {
@@ -88,23 +93,28 @@ const FeedPage: React.FC = () => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        <IonList>
-          {items.map((item) => (
-            <IonCard key={item.index}>
-              <img
-                src={`https://picsum.photos/600/200?random=${item.index}`}
-                alt="Random"
-              />
-              <IonCardHeader>
-                <IonCardTitle>{item.title}</IonCardTitle>
-                <IonCardSubtitle>Random Image {item.index}</IonCardSubtitle>
-              </IonCardHeader>
-              <IonCardContent>
-                Description: {item.description}
-              </IonCardContent>
-            </IonCard>
-          ))}
-        </IonList>
+        {/* Display loading message if items are being fetched */}
+        {isLoading ? (
+          <h1 className='ion-text-center' style={{ marginTop: '50%' }}>Loading feed entries... <br></br> Please standby</h1>
+        ) : (
+          <IonList>
+            {items.map((item) => (
+              <IonCard key={item.index}>
+                <img
+                  src={`https://picsum.photos/600/200?random=${item.index}`}
+                  alt="Random"
+                />
+                <IonCardHeader>
+                  <IonCardTitle>{item.title}</IonCardTitle>
+                  <IonCardSubtitle>Random Image {item.index}</IonCardSubtitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  Description: {item.description}
+                </IonCardContent>
+              </IonCard>
+            ))}
+          </IonList>
+        )}
 
         <IonInfiniteScroll onIonInfinite={loadMoreItems}>
           <IonInfiniteScrollContent

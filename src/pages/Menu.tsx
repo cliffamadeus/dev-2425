@@ -66,7 +66,7 @@ const Menu: React.FC = () => {
         position="top"
         message="Logout Successful"
         onDidDismiss={() => setIsToastOpen(false)}
-        duration={500}
+        duration={200}
         color="primary"
       />
 
