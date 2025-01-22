@@ -1,28 +1,28 @@
-import { 
+import {
   IonButton,
-    IonContent, 
-    IonHeader, 
-    IonIcon, 
-    IonItem, 
-    IonMenu, 
-    IonMenuToggle, 
-    IonPage, 
-    IonRouterOutlet, 
-    IonSplitPane, 
-    IonTitle, 
-    IonToast, 
-    IonToolbar 
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonItem,
+    IonMenu,
+    IonMenuToggle,
+    IonPage,
+    IonRouterOutlet,
+    IonSplitPane,
+    IonTitle,
+    IonToast,
+    IonToolbar
 } from '@ionic/react';
 import {homeOutline,newspaperOutline, logOutOutline, informationCircleOutline} from 'ionicons/icons'
 import { Redirect, Route } from 'react-router';
 import Home from './Home/Home';
 import About from './About/About';
-import Details from './Details';
+import Details from './Home/Details';
 import { useState } from 'react';
 
 const Menu: React.FC = () => {
   const [isToastOpen, setIsToastOpen] = useState(false);
-  
+
   const paths =[
     {name:'Home', url: '/it35-app/app/home', icon: homeOutline},
     {name:'About', url: '/it35-app/app/about', icon: informationCircleOutline},
@@ -65,8 +65,8 @@ const Menu: React.FC = () => {
         isOpen={isToastOpen}
         position="top"
         message="Logout Successful"
-        onDidDismiss={() => setIsToastOpen(false)} 
-        duration={500} 
+        onDidDismiss={() => setIsToastOpen(false)}
+        duration={500}
         color="primary"
       />
 
@@ -76,7 +76,7 @@ const Menu: React.FC = () => {
       <IonRouterOutlet id='main'>
         <Route exact path="/it35-app/app/home" component={Home} />
         <Route exact path="/it35-app/app/home/details" component={Details} />
-        
+
         <Route exact path="/it35-app/app/about" component={About} />
         <Route exact path="/it35-app/app">
           <Redirect to="/it35-app/app/home"/>
