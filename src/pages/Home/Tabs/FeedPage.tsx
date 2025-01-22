@@ -9,9 +9,11 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonList,
-  IonItem,
-  IonAvatar,
-  IonLabel,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
 } from '@ionic/react';
 
 const FeedPage: React.FC = () => {
@@ -34,7 +36,7 @@ const FeedPage: React.FC = () => {
       }
       setItems((prevItems) => [...prevItems, ...moreItems]);
       (event.target as HTMLIonInfiniteScrollElement).complete();
-    }, 1000); // Simulating network delay
+    }, 1000);
   };
 
   return (
@@ -51,17 +53,19 @@ const FeedPage: React.FC = () => {
       <IonContent>
         <IonList>
           {items.map((item, index) => (
-            <IonItem key={item}>
-              <IonAvatar slot="start">
-                <img
-                  src={`https://picsum.photos/80/80?random=${index}`}
-                  alt="avatar"
-                />
-              </IonAvatar>
-              <IonLabel>{item}</IonLabel>
-            </IonItem>
+              <IonCard key={item}>
+              <img  src={`https://picsum.photos/600/200?random=${index}`}
+                  alt="avatar" />
+              <IonCardHeader>
+                <IonCardTitle>Feed Photo</IonCardTitle>
+                <IonCardSubtitle></IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>Here's a small text description for the card content. Nothing more, nothing less.</IonCardContent>
+            </IonCard>
+             
           ))}
         </IonList>
+
         <IonInfiniteScroll onIonInfinite={loadMoreItems}>
           <IonInfiniteScrollContent
             loadingText="Please wait..."
