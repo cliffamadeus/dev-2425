@@ -1,30 +1,76 @@
-import React from 'react';
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonList,
+  IonItem,
+  IonAvatar,
+  IonLabel,
+} from '@ionic/react';
 
-const FeedPage = () => (
-  <>
-    <IonHeader>
-      <IonToolbar>
-        <IonButtons slot='start'>
-          <IonMenuButton></IonMenuButton>
-        </IonButtons>
-        <IonTitle>Feed</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    
-    <IonContent>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-        }}
-      >
-        Feed Page Content
-      </div>
-    </IonContent>
-  </>
-);
+const FeedPage: React.FC = () => {
+  const [items, setItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Initial load of items
+    const initialItems = [];
+    for (let i = 1; i <= 10; i++) {
+      initialItems.push(`Item ${i}`);
+    }
+    setItems(initialItems);
+  }, []);
+
+  const loadMoreItems = (event: CustomEvent<void>) => {
+    setTimeout(() => {
+      const moreItems: string[] = [];
+      for (let i = items.length + 1; i <= items.length + 20; i++) {
+        moreItems.push(`Item ${i}`);
+      }
+      setItems((prevItems) => [...prevItems, ...moreItems]);
+      (event.target as HTMLIonInfiniteScrollElement).complete();
+    }, 1000); // Simulating network delay
+  };
+
+  return (
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>Feed</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent>
+        <IonList>
+          {items.map((item, index) => (
+            <IonItem key={item}>
+              <IonAvatar slot="start">
+                <img
+                  src={`https://picsum.photos/80/80?random=${index}`}
+                  alt="avatar"
+                />
+              </IonAvatar>
+              <IonLabel>{item}</IonLabel>
+            </IonItem>
+          ))}
+        </IonList>
+        <IonInfiniteScroll onIonInfinite={loadMoreItems}>
+          <IonInfiniteScrollContent
+            loadingText="Please wait..."
+            loadingSpinner="bubbles"
+          ></IonInfiniteScrollContent>
+        </IonInfiniteScroll>
+      </IonContent>
+    </>
+  );
+};
 
 export default FeedPage;
