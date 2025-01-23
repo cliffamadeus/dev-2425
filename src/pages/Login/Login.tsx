@@ -25,7 +25,7 @@ const Login: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const doLogin = () =>{
-        navigation.push('/it35-app/app','root','replace');
+        navigation.push('/dev-2425/app','root','replace');
     }
 
   return (
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
         
         <IonToast
           isOpen={isOpen}
-          position='top'
+          position='bottom'
           message="Login Successful"
           onDidDismiss={() => setIsOpen(false)}
           duration={400}

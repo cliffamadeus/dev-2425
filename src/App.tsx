@@ -40,8 +40,8 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route exact path="/it35-app" component={Login}/>
-        <Route path="/it35-app/app" component={Menu}/>
+        <Route exact path="/dev-2425" component={Login}/>
+        <Route path="/dev-2425/app" component={Menu}/>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

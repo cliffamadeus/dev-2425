@@ -24,8 +24,8 @@ const Menu: React.FC = () => {
   const [isToastOpen, setIsToastOpen] = useState(false);
 
   const paths =[
-    {name:'Home', url: '/it35-app/app/home', icon: homeOutline},
-    {name:'About', url: '/it35-app/app/about', icon: informationCircleOutline},
+    {name:'Home', url: '/dev-2425/app/home', icon: homeOutline},
+    {name:'About', url: '/dev-2425/app/about', icon: informationCircleOutline},
   ]
 
   const handleLogout = () => {
@@ -52,7 +52,7 @@ const Menu: React.FC = () => {
         ))}
 
       <IonButton
-        routerLink='/it35-app/'
+        routerLink='/dev-2425/'
         routerDirection='root'
         expand='full'
         onClick={handleLogout} // Trigger toast and logout action
@@ -63,7 +63,7 @@ const Menu: React.FC = () => {
 
       <IonToast
         isOpen={isToastOpen}
-        position="top"
+        position="bottom"
         message="Logout Successful"
         onDidDismiss={() => setIsToastOpen(false)}
         duration={200}
@@ -74,12 +74,12 @@ const Menu: React.FC = () => {
       </IonMenu>
 
       <IonRouterOutlet id='main'>
-        <Route exact path="/it35-app/app/home" component={Home} />
-        <Route exact path="/it35-app/app/home/details" component={Details} />
+        <Route exact path="/dev-2425/app/home" component={Home} />
+        <Route exact path="/dev-2425/app/home/details" component={Details} />
 
-        <Route exact path="/it35-app/app/about" component={About} />
-        <Route exact path="/it35-app/app">
-          <Redirect to="/it35-app/app/home"/>
+        <Route exact path="/dev-2425/app/about" component={About} />
+        <Route exact path="/dev-2425/app">
+          <Redirect to="/dev-2425/app/home"/>
         </Route>
       </IonRouterOutlet>
 
