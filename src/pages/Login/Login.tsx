@@ -36,7 +36,7 @@ const Login: React.FC = () => {
           <IonCol></IonCol>
           <IonCol>
             <IonAvatar className='login-avatar'>
-              <img alt="Silhouette of a person's head" src="https://avatar.iran.liara.run/public/13" />
+              <img alt="Silhouette of a person's head" src="https://raw.githubusercontent.com/mhshariatipour1378/Avatars-Placeholder/refs/heads/master/back-end/images/boy/AV13.png" />
             </IonAvatar>
           </IonCol>
           <IonCol></IonCol>
@@ -82,8 +82,8 @@ const Login: React.FC = () => {
           position='top'
           message="Login Successful"
           onDidDismiss={() => setIsOpen(false)}
-          duration={500}
-          color="primary"
+          duration={400}
+          color="success"
         ></IonToast>
 
       </IonContent>
