@@ -18,6 +18,7 @@ import {
   IonRefresherContent,
   RefresherEventDetail,
   IonLoading,
+  IonButton,
 } from '@ionic/react';
 
 import './FeedPage.css';
@@ -31,6 +32,7 @@ interface PhotoItem {
 const FeedPage: React.FC = () => {
   const [items, setItems] = useState<PhotoItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isFeedFailed, setIsFeedFailed] = useState<boolean>(false);
 
   const generateRandomIndex = () => Math.floor(Math.random() * 1000);
 
@@ -51,9 +53,23 @@ const FeedPage: React.FC = () => {
 
   const loadInitialItems = async () => {
     setIsLoading(true);
-    const photoItems = await fetchPhotoDetails(10);
-    setItems(photoItems);
-    setIsLoading(false);
+    setIsFeedFailed(false); // Reset feed failure state
+
+    const timeout = setTimeout(() => {
+      setIsFeedFailed(true); // Mark the feed as failed
+      setIsLoading(false); // Stop the spinner
+    }, 5000);
+
+    try {
+      const photoItems = await fetchPhotoDetails(10);
+      clearTimeout(timeout); // Clear the timeout if data is successfully loaded
+      setItems(photoItems);
+    } catch (error) {
+      console.error("Failed to load feed", error);
+      setIsFeedFailed(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -67,12 +83,25 @@ const FeedPage: React.FC = () => {
   };
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    // Simulate a new fetch action for refreshing
     setIsLoading(true);
-    const newPhotos = await fetchPhotoDetails(10);
-    setItems(newPhotos);
-    setIsLoading(false);
-    event.detail.complete();
+    setIsFeedFailed(false); // Reset feed failure state
+
+    const timeout = setTimeout(() => {
+      setIsFeedFailed(true); // Mark the feed as failed
+      setIsLoading(false); // Stop the spinner
+    }, 5000);
+
+    try {
+      const photoItems = await fetchPhotoDetails(10);
+      clearTimeout(timeout); // Clear the timeout if data is successfully loaded
+      setItems(photoItems);
+    } catch (error) {
+      console.error("Failed to load feed", error);
+      setIsFeedFailed(true);
+    } finally {          
+      setIsLoading(false);
+      event.detail.complete();
+    }
   };
 
   return (
@@ -87,6 +116,15 @@ const FeedPage: React.FC = () => {
       </IonHeader>
 
       <IonContent>
+        {isFeedFailed && !isLoading && (
+          <div style={{ textAlign: 'center', marginTop: '10rem', padding: '2rem' }}>
+            <h1 style={{ color: 'grey' }}>Failed to load feed. Please refresh and try again.</h1>
+            <IonButton onClick={loadInitialItems} color="primary">
+              Refresh
+            </IonButton>
+          </div>
+        )}
+
         <IonRefresher
           slot="fixed"
           pullFactor={0.5}
@@ -97,14 +135,13 @@ const FeedPage: React.FC = () => {
           <IonRefresherContent />
         </IonRefresher>
 
-        {/* Display loading spinner if items are being fetched */}
         <IonLoading
           isOpen={isLoading}
           message="Loading feed entries... Please standby"
           spinner="circles"
         />
 
-        {!isLoading && (
+        {!isLoading && !isFeedFailed && (
           <IonList>
             {items.map((item) => (
               <IonCard key={item.index}>
@@ -124,13 +161,14 @@ const FeedPage: React.FC = () => {
           </IonList>
         )}
 
-        <IonInfiniteScroll onIonInfinite={loadMoreItems}>
+        <IonInfiniteScroll onIonInfinite={loadMoreItems} disabled={isFeedFailed}>
           <IonInfiniteScrollContent
             loadingText="Please wait..."
             loadingSpinner="bubbles"
           />
         </IonInfiniteScroll>
       </IonContent>
+
     </>
   );
 };
