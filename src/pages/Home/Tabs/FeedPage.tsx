@@ -6,8 +6,6 @@ import {
   IonMenuButton,
   IonTitle,
   IonToolbar,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
   IonList,
   IonCard,
   IonCardContent,
@@ -23,49 +21,37 @@ import {
 
 import './FeedPage.css';
 
-interface PhotoItem {
+interface FeedItem {
   title: string;
+  link: string;
   description: string;
-  index: number;
+  pubDate: string;
 }
 
 const FeedPage: React.FC = () => {
-  const [items, setItems] = useState<PhotoItem[]>([]);
+  const [items, setItems] = useState<FeedItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFeedFailed, setIsFeedFailed] = useState<boolean>(false);
 
-  const generateRandomIndex = () => Math.floor(Math.random() * 1000);
-
-  const fetchPhotoDetails = async (count: number) => {
-    const photos = [];
-    for (let i = 0; i < count; i++) {
-      const index = generateRandomIndex();
-      const response = await fetch(`https://picsum.photos/id/${index}/info`);
-      const data = await response.json();
-      photos.push({
-        title: `Photo by ${data.author}`,
-        description: data.download_url,
-        index,
-      });
-    }
-    return photos;
-  };
-
-  const loadInitialItems = async () => {
+  // Fetch and parse RSS feed using RSS to JSON API
+  const fetchRSSFeed = async () => {
     setIsLoading(true);
-    setIsFeedFailed(false); // Reset feed failure state
-
-    const timeout = setTimeout(() => {
-      setIsFeedFailed(true); // Mark the feed as failed
-      setIsLoading(false); // Stop the spinner
-    }, 5000);
+    setIsFeedFailed(false);
 
     try {
-      const photoItems = await fetchPhotoDetails(10);
-      clearTimeout(timeout); // Clear the timeout if data is successfully loaded
-      setItems(photoItems);
+      const response = await fetch(
+        `https://api.rss2json.com/v1/api.json?rss_url=https://www.philstar.com/rss/headlines`
+      );
+      const data = await response.json();
+      const items = data.items.map((item: any) => ({
+        title: item.title,
+        link: item.link,
+        description: item.description,
+        pubDate: item.pubDate,
+      }));
+      setItems(items);
     } catch (error) {
-      console.error("Failed to load feed", error);
+      console.error('Failed to load feed:', error);
       setIsFeedFailed(true);
     } finally {
       setIsLoading(false);
@@ -73,35 +59,12 @@ const FeedPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadInitialItems();
+    fetchRSSFeed();
   }, []);
 
-  const loadMoreItems = async (event: CustomEvent<void>) => {
-    const morePhotos = await fetchPhotoDetails(10);
-    setItems((prevItems) => [...prevItems, ...morePhotos]);
-    (event.target as HTMLIonInfiniteScrollElement).complete();
-  };
-
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    setIsLoading(true);
-    setIsFeedFailed(false); // Reset feed failure state
-
-    const timeout = setTimeout(() => {
-      setIsFeedFailed(true); // Mark the feed as failed
-      setIsLoading(false); // Stop the spinner
-    }, 5000);
-
-    try {
-      const photoItems = await fetchPhotoDetails(10);
-      clearTimeout(timeout); // Clear the timeout if data is successfully loaded
-      setItems(photoItems);
-    } catch (error) {
-      console.error("Failed to load feed", error);
-      setIsFeedFailed(true);
-    } finally {          
-      setIsLoading(false);
-      event.detail.complete();
-    }
+    await fetchRSSFeed();
+    event.detail.complete();
   };
 
   return (
@@ -111,64 +74,48 @@ const FeedPage: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Feed</IonTitle>
+          <IonTitle>Headlines</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
+      <IonContent className='ion-padding'>
         {isFeedFailed && !isLoading && (
-          <div style={{ textAlign: 'center', marginTop: '10rem', padding: '2rem' }}>
-            <h1 style={{ color: 'grey' }}>Failed to load feed. Please refresh and try again.</h1>
-            <IonButton onClick={loadInitialItems} color="primary">
+          <div style={{ textAlign: 'center', marginTop: '50%', padding: '2rem' }}>
+            <h1 style={{ color: 'grey' }}>
+              Failed to load feed.<br />Please refresh and try again.
+            </h1>
+            <IonButton onClick={fetchRSSFeed} color="primary">
               Refresh
             </IonButton>
           </div>
         )}
 
-        <IonRefresher
-          slot="fixed"
-          pullFactor={0.5}
-          pullMin={100}
-          pullMax={200}
-          onIonRefresh={handleRefresh}
-        >
+        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent />
         </IonRefresher>
 
-        <IonLoading
-          isOpen={isLoading}
-          message="Loading feed entries... Please standby"
-          spinner="circles"
-        />
+        <IonLoading isOpen={isLoading} message="Loading feed entries..." spinner="circles" />
 
         {!isLoading && !isFeedFailed && (
           <IonList>
-            {items.map((item) => (
-              <IonCard key={item.index}>
-                <img
-                  src={`https://picsum.photos/600/200?random=${item.index}`}
-                  alt="Random"
-                />
+            {items.map((item, index) => (
+              <IonCard key={index}>
                 <IonCardHeader>
                   <IonCardTitle>{item.title}</IonCardTitle>
-                  <IonCardSubtitle>Random Image {item.index}</IonCardSubtitle>
+                  <IonCardSubtitle>{new Date(item.pubDate).toLocaleString()}</IonCardSubtitle>
                 </IonCardHeader>
                 <IonCardContent>
-                  Description: {item.description}
+                  <p dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                  <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+                    Read more
+                  </a>
                 </IonCardContent>
               </IonCard>
             ))}
           </IonList>
         )}
 
-        <IonInfiniteScroll onIonInfinite={loadMoreItems} disabled={isFeedFailed}>
-          <IonInfiniteScrollContent
-            loadingText="Please wait..."
-            loadingSpinner="bubbles"
-          />
-        </IonInfiniteScroll>
       </IonContent>
-
     </>
   );
 };
